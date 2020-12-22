@@ -1,16 +1,11 @@
 
-//DOM Variables
-//API Call
-//api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 var apiKey = "&units=imperial&appid=95af86a9b5702eee43786687bca28ba8"
-// var city = $("#citySearch").val();
-var currentWeather = []
 var date = new Date();
 
 
 
 
-//Event Listeners
+//Event Listener
 $("#searchBtn").on("click", function (e) {
     e.preventDefault();
     city = $("#citySearch").val();
@@ -30,17 +25,20 @@ $("#searchBtn").on("click", function (e) {
             console.log(response.wind.speed);
             console.log(response.main.humidity);
 
+
             $("#lastCity").empty();
+            $("#forecast").empty();
             getCurrentWeather(response);
             forecastFiveDay(response);
+            makeList()
         });
 });
 
 function makeList() {
-    let listItem = $("<li>").addClass("list-group-item").text(inputCity);
+    var listItem = $("<li>").addClass("list-group-item").text(city);
     $(".list").append(listItem);
 }
-
+//function for getting the current weather and appending info
 function getCurrentWeather(response) {
 
 
@@ -68,10 +66,10 @@ function getCurrentWeather(response) {
 
 
 };
-
+//function for getting 5 day forcast and appending it
 function forecastFiveDay(response) {
 
-    // city = $("#citySearch").val();
+    
 
     $.ajax({
         url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + apiKey,
@@ -82,7 +80,7 @@ function forecastFiveDay(response) {
             console.log(response.list[0].dt_txt);
             console.log(response.list[0].main.temp);
             console.log(response.list[0].main.humidity);
-            // console.log(response.list[i].weather[0].icon)
+           //for loop appends the info 5 times to create 5 cards
             for (var i = 0; i < 5; i++) {
 
 
