@@ -30,8 +30,9 @@ $("#searchBtn").on("click", function (e) {
             console.log(response.wind.speed);
             console.log(response.main.humidity);
 
-
+            $("#lastCity").empty();
             getCurrentWeather(response);
+            forecastFiveDay(response);
         });
 });
 
@@ -60,10 +61,47 @@ function getCurrentWeather(response) {
 
     var image = $("<img>").attr("src", "https://openweathermap.org/img/w/" + response.weather[0].icon + ".png")
 
-    inputCity.append(cityDate, image)
+    inputCity.append(cityDate, image);
     cardBody.append(inputCity, temperatureF, humidity, wind);
     card.append(cardBody);
-    $("#currentCity").append(card)
+    $("#lastCity").append(card);
+
+
+};
+
+function forecastFiveDay(response) {
+
+    // city = $("#citySearch").val();
+
+    $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + apiKey,
+        method: "GET"
+    })
+        .then(function (response) {
+            console.log(response)
+            console.log(response.list[0].dt_txt);
+            console.log(response.list[0].main.temp);
+            console.log(response.list[0].main.humidity);
+            // console.log(response.list[i].weather[0].icon)
+            for (var i = 0; i < 5; i++) {
+
+
+                var temp = response.list[0].main.temp
+                var card = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
+                var cardBody = $("<div>").addClass("card-body p-3 forecastBody")
+                var cityDate = $("<h4>").addClass("card-title").text(date.toLocaleDateString('en-US'));
+                var temperature = $("<p>").addClass("card-text forecastTemp").text("Temperature: " + temp + " °F");
+                var humidity = $("<p>").addClass("card-text forecastHumidity").text("Humidity: " + response.list[i].main.humidity + "%");
+
+                var image = $("<img>").attr("src", "https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png")
+
+                cardBody.append(cityDate, image, temperature, humidity);
+                card.append(cardBody);
+                $("#forecast").append(card);
+            }
+        });
+
+
 };
 
 
