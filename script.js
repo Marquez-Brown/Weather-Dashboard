@@ -33,7 +33,7 @@ $("#searchBtn").on("click", function (e) {
             makeList()
         });
 });
-
+//appends search query to list below search bar
 function makeList() {
     var listItem = $("<li>").addClass("list-group-item").text(city);
     $(".list").append(listItem);
@@ -42,7 +42,7 @@ function makeList() {
 function getCurrentWeather(response) {
 
 
-
+// elements being appended to create a card and fill it
     var card = $("<div>").addClass("card");
 
     var cardBody = $("<div>").addClass("card-body");
